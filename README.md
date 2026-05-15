@@ -36,7 +36,7 @@
 1. Clone the repository:
 
 ```bash
- git clone [https://github.com/MahmudovMZ/subscription-menage-service.git](https://github.com/MahmudovMZ/subscription-menage-service.git)
+git clone https://github.com/MahmudovMZ/subscription-menage-service.git
 
 cd subscription-service2.
 ```
@@ -54,11 +54,11 @@ cp .env.example .env
 
 2. Run with Docker Compose
 
-   ```bash
-   docker-compose up --build
-   ```
+```bash
+docker-compose up --build
+```
 
-   The service will be available at:
+The service will be available at:
 
 ```
 http://localhost:8080
