@@ -1,0 +1,210 @@
+basePath: /
+definitions:
+  httpHandler.createInput:
+    properties:
+      end_date:
+        example: 05-2027
+        type: string
+      price:
+        example: 15
+        type: integer
+      service_name:
+        example: Netflix
+        type: string
+      start_date:
+        example: 05-2026
+        type: string
+      user_id:
+        example: user-uuid
+        type: string
+    type: object
+  models.Subscription:
+    properties:
+      end_date:
+        type: string
+      id:
+        type: string
+      price:
+        type: integer
+      service_name:
+        type: string
+      start_date:
+        type: string
+      user_id:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: API Server for Subscription Tracking Application
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Subscription Management API
+  version: "1.0"
+paths:
+  /subscriptions:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Subscription Data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/httpHandler.createInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Subscription'
+        "400":
+          description: invalid request body
+          schema:
+            type: string
+        "500":
+          description: failed to create subscription
+          schema:
+            type: string
+      summary: Create subscription
+      tags:
+      - subscriptions
+  /subscriptions/{user_id}/{sub_id}:
+    delete:
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: Subscription ID
+        in: path
+        name: sub_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: subscription deleted successfully
+          schema:
+            type: string
+      summary: Delete subscription
+      tags:
+      - subscriptions
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: Subscription ID
+        in: path
+        name: sub_id
+        required: true
+        type: string
+      - description: Update Data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/httpHandler.createInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Subscription'
+      summary: Update subscription
+      tags:
+      - subscriptions
+  /subscriptions/by-id/{user_id}/{sub_id}:
+    get:
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: Subscription ID
+        in: path
+        name: sub_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Subscription'
+        "404":
+          description: subscription not found
+          schema:
+            type: string
+      summary: Get subscription by ID
+      tags:
+      - subscriptions
+  /subscriptions/list/{user_id}:
+    get:
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Subscription'
+            type: array
+      summary: List subscriptions
+      tags:
+      - subscriptions
+  /subscriptions/stats/{user_id}/{from}/{to}/{sub_name}:
+    get:
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: Start Date (MM-YYYY)
+        in: path
+        name: from
+        required: true
+        type: string
+      - description: End Date (MM-YYYY)
+        in: path
+        name: to
+        required: true
+        type: string
+      - description: Service Name
+        in: path
+        name: sub_name
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: invalid date format
+          schema:
+            type: string
+      summary: Get statistics
+      tags:
+      - subscriptions
+swagger: "2.0"
